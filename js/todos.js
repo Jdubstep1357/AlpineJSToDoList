@@ -1,9 +1,26 @@
+// Local storage
+window.todoStore = {
+    // call save method
+    todos: JSON.parse(localStorage.getItem('todo-store') || '[]'),
+
+    // write local storage and make it stringified content of all todos
+    save() {
+        localStorage.setItem('todo-store', JSON.stringify(this.todos));
+    }
+};
+
+
 window.todos = function () {
     return {
 
+        // ... merges another object - references window.todoStore
+        ...todoStore,
+
         filter: 'all',
     
-        todos: [],
+        newTodo: '',
+
+        
 
         editedTodo: null,
 
@@ -26,7 +43,10 @@ window.todos = function () {
             }[this.filter];
         },
 
-        newTodo: '',
+        get allComplete() {
+            return this.todos.length === this.completed.length;
+        },
+
 
 
         addTodo() {
@@ -40,6 +60,9 @@ window.todos = function () {
                 body: this.newTodo,
                 completed: false
             });
+
+            // update / save to local storage
+            this.save();
 
             this.newTodo = '';
         },
@@ -63,14 +86,40 @@ window.todos = function () {
             if (todo.body.trim() === '') {
                 return this.deleteTodo(todo);
             }
+
             this.editedTodo = null;
+
+            this.save();
         },
 
         deleteTodo(todo) {
             let position = this.todos.indexOf(todo);
 
             this.todos.splice(position, 1);
+
+            this.save();
         },
+
+        toggleTodoCompletion(todo) {
+            todo.completed = ! todo.completed;
+
+            this.save();
+        },
+
+        toggleAllComplete() {
+
+            let allComplete = this.allComplete;
+
+            this.todos.forEach(todo => todo.completed = ! allComplete);
+
+            this.save();
+        },
+
+        clearCompletedTodos() {
+            this.todos = this.active;
+
+            this.save();
+        }
         
     }
 

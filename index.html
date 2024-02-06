@@ -39,7 +39,10 @@
 				x-show="todos.length"
 			>
 
+			<!-- When clicked will checkmark or disable all boxes -->
 				<input 
+				x-model="allComplete"
+				@click="toggleAllComplete"
 				id="toggle-all" 
 				class="toggle-all" 
 				type="checkbox"
@@ -60,7 +63,7 @@
 
 								<input 
 								x-model="todo.completed"
-								@click="todo.completed = ! todo.completed;"
+								@click="toggleTodoCompletion(todo)"
 								class="toggle" 
 								type="checkbox"
 								>
@@ -115,7 +118,7 @@
 				<!-- Hidden if no completed items are left -->
 				<button 
 				x-show="completed.length"
-				@click="todos = active" 
+				@click="clearCompletedTodos" 
 				class="clear-completed"
 				
 				>

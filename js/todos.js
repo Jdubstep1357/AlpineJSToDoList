@@ -35,7 +35,8 @@ window.todos = function () {
             }
 
             this.todos.push({
-                id: this.todos.length + 1,
+                // Each id is only accociated with unique id
+                id: Date.now(),
                 body: this.newTodo,
                 completed: false
             });

@@ -9,19 +9,21 @@ window.todoStore = {
     }
 };
 
+// Making a new Todo item
+window.Todo = function (body) {
+    this.id = Date.now();
+    this.body = body;
+    this.completed = false;
+};
+
 
 window.todos = function () {
     return {
 
         // ... merges another object - references window.todoStore
         ...todoStore,
-
         filter: 'all',
-    
         newTodo: '',
-
-        
-
         editedTodo: null,
 
 
@@ -50,16 +52,22 @@ window.todos = function () {
 
 
         addTodo() {
+
+
             if (! this.newTodo) {
                 return;
             }
 
-            this.todos.push({
-                // Each id is only accociated with unique id
-                id: Date.now(),
-                body: this.newTodo,
-                completed: false
-            });
+            // referes up to window.Todo
+            this.todos.push(new Todo(this.newTodo));
+
+            // Original before making constructor up top
+            // this.todos.push({
+            //     // Each id is only accociated with unique id
+            //     id: Date.now(),
+            //     body: this.newTodo,
+            //     completed: false
+            // });
 
             // update / save to local storage
             this.save();
@@ -110,7 +118,9 @@ window.todos = function () {
 
             let allComplete = this.allComplete;
 
-            this.todos.forEach(todo => todo.completed = ! allComplete);
+            this.todos.forEach(
+                todo => todo.completed = ! allComplete
+                );
 
             this.save();
         },

@@ -1,5 +1,7 @@
 window.todos = function () {
     return {
+
+        filter: 'all',
     
         todos: [],
 
@@ -12,6 +14,16 @@ window.todos = function () {
 
         get completed() {
             return this.todos.filter(todo => todo.completed);
+        },
+
+        get filteredTodos() {
+            // [this.filter] - array access - any object can be accessed with array notation
+
+            return {
+                all: this.todos,
+                active: this.active,
+                completed: this.completed,
+            }[this.filter];
         },
 
         newTodo: '',
@@ -28,11 +40,24 @@ window.todos = function () {
         },
 
         editTodo(todo) {
+            // if user tries to edit after dbl click and clicks out, reverts to original txt
+            todo.cachedBody = todo.body;
             this.editedTodo = todo;
+        },
+
+        cancelEdit(todo) {
+            todo.body = todo.cachedBody;
+
+            this.editedTodo = null;
+
+            delete todo.cachedBody;
         },
 
         // After person double clicks and changes selection, confirm it
         editComplete(todo) {
+            if (todo.body.trim() === '') {
+                return this.deleteTodo(todo);
+            }
             this.editedTodo = null;
         },
 

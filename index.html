@@ -88,7 +88,8 @@
 				</ul>
 			</section>
 
-			<footer class="footer" x-show="true">
+			<!-- Buttons at bottom of todo box. Will only show if 1 or more tasks are added  -->
+			<footer class="footer" x-show="todos.length">
 
 				<!-- This should be `0 items left` by default -->
 				<span class="todo-count"><strong x-text="active.length"></strong> item left</span>

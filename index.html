@@ -92,7 +92,11 @@
 			<footer class="footer" x-show="todos.length">
 
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong x-text="active.length"></strong> item left</span>
+				<span class="todo-count">
+					<strong x-text="active.length"></strong> 
+					<span x-text="active.length === 1 ? 'item' : 'items'">item</span> left
+				</span>
+
 
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
